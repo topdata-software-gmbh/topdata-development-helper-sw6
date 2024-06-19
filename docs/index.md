@@ -1,0 +1,19 @@
+# Console Commands
+
+## topdata:development-helper:delete-all-products
+Deletes all products from the database.
+
+## topdata:development-helper:plugin-config:dump
+Dumps the plugin configuration to a JSON file in the `plugin-config-dumps` directory.
+
+## topdata:development-helper:plugin-config:restore
+Restores the plugin configuration from a JSON file in the `plugin-config-dumps` directory.
+
+## topdata:development-helper:delete-unused-properties
+Deletes all properties that are not used in any product.
+
+
+# TODO
+
+see also: https://docs.shopware.com/en/shopware-6-en/tutorials-and-faq/sql-tips-tricks
+
