@@ -225,7 +225,7 @@ class CliStyle extends SymfonyStyle
      * 01/2024 added parameter $maxLength which cuts too long strings
      * 03/2024 renamed dictAsHorizontalTable --> dumpDict
      */
-    public function dumpDict(array|object|null $dict, ?string $title = null, bool $bFlatten = true, ?int $maxLength = 80): void
+    public function dumpDict($dict, ?string $title = null, bool $bFlatten = true, ?int $maxLength = 80): void
     {
         // optional conversion from object to assoc
         if (is_object($dict)) {
@@ -284,7 +284,7 @@ class CliStyle extends SymfonyStyle
     /**
      * 05/2021 created.
      */
-    public function done(string|null $msg = "DONE"): void
+    public function done(?string $msg = "DONE"): void
     {
         $this->success("==== $msg ====");
     }
@@ -464,7 +464,7 @@ class CliStyle extends SymfonyStyle
      *
      * @param string|string[] $sql
      */
-    public function dumpSql(string|array $sql): void
+    public function dumpSql( $sql): void
     {
         if(is_string($sql)) {
             $sql = [$sql];
