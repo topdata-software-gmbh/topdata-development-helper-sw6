@@ -90,6 +90,9 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
 
         $this->_deleteEmptyPropertyGroups();
 
+        $this->report['Property Groups (after)'] = $this->connection->fetchOne('SELECT COUNT(*) FROM property_group');
+        $this->report['Property Group Options (after)'] = $this->connection->fetchOne('SELECT COUNT(*) FROM property_group_option');
+
         $this->cliStyle->dumpDict($this->report, 'Report');
 
         return Command::SUCCESS;
