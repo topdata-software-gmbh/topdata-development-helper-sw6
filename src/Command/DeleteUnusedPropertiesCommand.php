@@ -25,7 +25,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
     private string $defaultLanguageId; // hex sw6 id
 
     public function __construct(
-        Connection $connection,
+        Connection $connection
     ) {
         parent::__construct();
         $this->connection = $connection;
