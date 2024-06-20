@@ -10,8 +10,7 @@ Dumps the plugin configuration to a JSON file in the `plugin-config-dumps` direc
 Restores the plugin configuration from a JSON file in the `plugin-config-dumps` directory.
 
 ## topdata:development-helper:delete-unused-properties
-Deletes all properties that are not used in any product.
-
+It deletes unused properties group options and empty property groups from the database.
 
 # TODO
 
