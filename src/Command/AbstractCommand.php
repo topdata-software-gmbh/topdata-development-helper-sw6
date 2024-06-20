@@ -7,9 +7,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Topdata\TopdataConnectorSW6\Helper\CliStyle;
-use Topdata\TopdataConnectorSW6\Util\UtilDict;
-use Topdata\TopdataConnectorSW6\Util\UtilFormatter;
+use Topdata\TopdataDevelopmentHelperSW6\Helper\CliStyle;
+use Topdata\TopdataDevelopmentHelperSW6\Util\UtilDict;
+use Topdata\TopdataDevelopmentHelperSW6\Util\UtilFormatter;
 
 /**
  * base command class with useful stuff for all commands
