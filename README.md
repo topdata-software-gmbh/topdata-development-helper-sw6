@@ -13,3 +13,6 @@ a Shopware6 Plugin providing some helpers for developers.
 
 ## Documentation
 For more details, see the [documentation](docs/index.md).
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md).

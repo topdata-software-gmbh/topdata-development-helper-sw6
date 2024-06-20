@@ -5,5 +5,5 @@
 - open-sourced the plugin
 
 [0.0.3] - 2024-05-26
-- added `sql/elasticsearch_index_task.sql` as this is missing after refresh sw65 and sw66 installations in the database
+- added `sql/elasticsearch_index_task.sql` as this is missing in fresh sw65 and sw66 installations in the database
 
