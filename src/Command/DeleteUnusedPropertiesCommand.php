@@ -162,7 +162,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
             $unusedPropertiesString = implode(',', array_map(fn($x) => '0x' . bin2hex($x) , $unusedPropertyGroupOptionIds));
             $sql = "DELETE FROM property_group_option WHERE id IN ($unusedPropertiesString)";
             $cnt = $this->connection->executeStatement($sql);
-            $this->report['deletedUnusedPropertyGroupOptions'] = $cnt;
+            $this->report['Deleted Unused Property Group Options'] = $cnt;
         }
 
         // ---- done
