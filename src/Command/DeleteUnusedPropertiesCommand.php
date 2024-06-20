@@ -23,6 +23,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
 
     private Connection $connection;
     private string $defaultLanguageId; // hex sw6 id
+    private array $report = [];
 
     public function __construct(
         Connection $connection
@@ -52,6 +53,8 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
             'defaultLanguageId' => $this->defaultLanguageId,
         ])->fetchAllAssociative();
 
+        $this->report['Empty Property Groups (before)'] = count($emptyPropertyGroups);
+
         if (empty($emptyPropertyGroups)) {
             $this->cliStyle->success('No empty property groups found.');
             return;
@@ -69,7 +72,8 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
         // Delete the empty property groups
         $emptyPropertyGroupsString = implode(',', array_map(fn($x) => '0x' . bin2hex($x['id']) , $emptyPropertyGroups));
         $sql = "DELETE FROM property_group WHERE id IN ($emptyPropertyGroupsString)";
-        $this->connection->executeStatement($sql);
+        $cnt = $this->connection->executeStatement($sql);
+        $this->report['Deleted Empty Property Groups'] = $cnt;
 
         $this->cliStyle->success(sprintf('Deleted %d empty property groups.', count($emptyPropertyGroups)));
     }
@@ -86,6 +90,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
 
         $this->_deleteEmptyPropertyGroups();
 
+        $this->cliStyle->dumpDict($this->report, 'Report');
 
         return Command::SUCCESS;
     }
@@ -99,22 +104,25 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
 
 
 
-    private function getUnusedPropertyGroupOptionIds(): array
+    private function _getUnusedPropertyGroupOptionIds(): array
     {
-        $usedPropertyIds = $this->getUsedPropertyIds();
-        $this->cliStyle->green(count($usedPropertyIds) . ' used properties found.');
-
-        $allPropertyIds = $this->getAllPropertyIds();
+        $allPropertyIds = $this->getAllPropertyGroupOptionIds();
         $this->cliStyle->green(count($allPropertyIds) . ' all properties found.');
+        $this->report['All Property Group Options (before)'] = count($allPropertyIds);
 
-        $ret = array_diff($allPropertyIds, $usedPropertyIds);
+        $usedPropertyGroupOptionIds = $this->_getUsedPropertyGroupOptionIds();
+        $this->cliStyle->green(count($usedPropertyGroupOptionIds) . ' used properties found.');
+        $this->report['Used Property Group Options (before)'] = count($usedPropertyGroupOptionIds);
+
+        $ret = array_diff($allPropertyIds, $usedPropertyGroupOptionIds);
         $this->cliStyle->green(count($ret) . ' unused properties found.');
+        $this->report['Unused Property Group Options (before)'] = count($ret);
 
         return $ret;
     }
 
 
-    private function getUsedPropertyIds(): array
+    private function _getUsedPropertyGroupOptionIds(): array
     {
         $sql = 'SELECT DISTINCT property_group_option_id FROM product_property';
 
@@ -123,7 +131,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
 
 
 
-    private function getAllPropertyIds(): array
+    private function getAllPropertyGroupOptionIds(): array
     {
         $sql = 'SELECT id FROM property_group_option';
 
@@ -133,7 +141,7 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
     private function _deleteUnusedPropertyGroupOptions(): void
     {
         // ---- find them
-        $unusedPropertyGroupOptionIds = $this->getUnusedPropertyGroupOptionIds();
+        $unusedPropertyGroupOptionIds = $this->_getUnusedPropertyGroupOptionIds();
         if (empty($unusedPropertyGroupOptionIds)) {
             $this->cliStyle->success('No unused properties found.');
             return;
@@ -153,7 +161,8 @@ class DeleteUnusedPropertiesCommand extends AbstractCommand
             // ---- delete the unused property group options
             $unusedPropertiesString = implode(',', array_map(fn($x) => '0x' . bin2hex($x) , $unusedPropertyGroupOptionIds));
             $sql = "DELETE FROM property_group_option WHERE id IN ($unusedPropertiesString)";
-            $this->connection->executeStatement($sql);
+            $cnt = $this->connection->executeStatement($sql);
+            $this->report['deletedUnusedPropertyGroupOptions'] = $cnt;
         }
 
         // ---- done
