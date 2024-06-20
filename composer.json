@@ -15,7 +15,7 @@
         "shopware/core": "6.4.* || 6.5.* || 6.6.*"
     },
     "extra":       {
-        "topdata-technical-documentation": "https://bitbucket.org/topdata/topdata-development-helper-sw6/src/main/README.md",
+        "topdata-technical-documentation": "https://github.com/topdata-software-gmbh/topdata-development-helper-sw6/blob/main/README.md",
         "topdata-user-documentation":      null,
         "shopware-plugin-class":           "Topdata\\TopdataDevelopmentHelperSW6\\TopdataDevelopmentHelperSW6",
         "plugin-icon":                     "src/Resources/config/icon-topdata-development-helper-sw6-256x256.png",
