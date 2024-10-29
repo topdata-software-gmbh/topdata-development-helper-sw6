@@ -1,3 +1,16 @@
+
+# Disabling Polling
+- When this plugin is installed, it disables the polling of `/api/notification/message?limit=5`
+- to disable the polling of `queue.json`, adjust the following configuration 
+  (TODO: the plugin should provide a console command for this, also not `shopware.yaml`, but `z-shopware.yaml`): 
+```yaml
+# config/packages/shopware.yaml
+shopware:
+    admin_worker:
+        enable_admin_worker: false
+```
+
+
 # Console Commands
 
 ## topdata:development-helper:delete-all-products
