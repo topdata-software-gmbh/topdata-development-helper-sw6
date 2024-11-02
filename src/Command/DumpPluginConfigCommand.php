@@ -11,12 +11,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Topdata\TopdataDevelopmentHelperSW6\Util\UtilAppPaths;
+use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 
 /**
  * 05/2024 created
  */
 #[AsCommand(name: 'topdata:development-helper:plugin-config:dump')]
-class DumpPluginConfigCommand extends Command
+class DumpPluginConfigCommand extends AbstractTopdataCommand
 {
     protected static $defaultName = 'topdata:development-helper:plugin-config:dump';
 

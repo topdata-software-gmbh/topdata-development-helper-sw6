@@ -7,12 +7,13 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 
 /**
  * 06/2023 created
  */
 #[AsCommand(name: 'topdata:development-helper:delete-all-products')]
-class DeleteAllProductsCommand extends AbstractCommand
+class DeleteAllProductsCommand extends AbstractTopdataCommand
 {
     protected static $defaultName = 'topdata:development-helper:delete-all-products';
 

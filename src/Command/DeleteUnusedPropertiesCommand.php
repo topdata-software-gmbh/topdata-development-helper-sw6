@@ -4,20 +4,17 @@ namespace Topdata\TopdataDevelopmentHelperSW6\Command;
 
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Defaults;
-use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 
 /**
  * 06/2024 created
  */
 #[AsCommand(name: 'topdata:development-helper:delete-unused-properties')]
-class DeleteUnusedPropertiesCommand extends AbstractCommand
+class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
 {
     protected static $defaultName = 'topdata:development-helper:delete-unused-properties';
 

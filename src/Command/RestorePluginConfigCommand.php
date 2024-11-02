@@ -12,12 +12,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Topdata\TopdataDevelopmentHelperSW6\Util\UtilAppPaths;
+use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 
 /**
  * 05/2024 created
  */
 #[AsCommand(name: 'topdata:development-helper:plugin-config:restore')]
-class RestorePluginConfigCommand extends Command
+class RestorePluginConfigCommand extends AbstractTopdataCommand
 {
     protected static $defaultName = 'topdata:development-helper:plugin-config:restore';
 
