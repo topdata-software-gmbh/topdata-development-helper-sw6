@@ -23,6 +23,10 @@
             <tag name="console.command"/>
         </service>
 
+        <service id="Topdata\TopdataDevelopmentHelperSW6\Command\DeleteInvalidMediaCommand" autowire="true">
+            <tag name="console.command"/>
+        </service>
+
 
     </services>
 </container>

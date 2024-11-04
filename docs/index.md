@@ -25,6 +25,9 @@ Restores the plugin configuration from a JSON file in the `plugin-config-dumps` 
 ## topdata:development-helper:delete-unused-properties
 It deletes unused properties group options and empty property groups from the database.
 
+## topdata:development-helper:delete-invalid-media
+Deletes media entries from the database where the corresponding physical files don't exist in the filesystem.
+
 # TODO
 
 see also: https://docs.shopware.com/en/shopware-6-en/tutorials-and-faq/sql-tips-tricks

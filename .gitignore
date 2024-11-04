@@ -2,3 +2,4 @@
 .aider*
 plugin-config-dumps/*
 builds/
+.env
