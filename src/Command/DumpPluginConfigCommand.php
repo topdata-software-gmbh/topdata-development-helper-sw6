@@ -19,8 +19,6 @@ use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 #[AsCommand(name: 'topdata:development-helper:plugin-config:dump')]
 class DumpPluginConfigCommand extends AbstractTopdataCommand
 {
-    protected static $defaultName = 'topdata:development-helper:plugin-config:dump';
-
     private SystemConfigService $systemConfigService;
 
     public function __construct(SystemConfigService $systemConfigService)

@@ -11,10 +11,6 @@
             "role":     "Manufacturer"
         }
     ],
-    "require":     {
-        "shopware/core":                  "6.5.* || 6.6.*",
-        "topdata/topdata-foundation-sw6": "^1.0"
-    },
     "extra":       {
         "topdata-technical-documentation": "https://github.com/topdata-software-gmbh/topdata-development-helper-sw6/blob/main/README.md",
         "topdata-user-documentation":      null,
@@ -42,5 +38,12 @@
         "psr-4": {
             "Topdata\\TopdataDevelopmentHelperSW6\\": "src/"
         }
+    },
+    "require":     {
+        "shopware/core":                  "6.5.* || 6.6.*",
+        "topdata/topdata-foundation-sw6": "^1.0"
+    },
+    "require-dev": {
+        "rector/rector": "^1.2"
     }
 }

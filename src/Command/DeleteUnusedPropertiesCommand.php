@@ -16,8 +16,6 @@ use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
 #[AsCommand(name: 'topdata:development-helper:delete-unused-properties')]
 class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
 {
-    protected static $defaultName = 'topdata:development-helper:delete-unused-properties';
-
     private Connection $connection;
     private string $defaultLanguageId; // hex sw6 id
     private array $report = [];

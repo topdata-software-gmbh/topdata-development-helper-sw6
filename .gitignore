@@ -3,3 +3,5 @@
 plugin-config-dumps/*
 builds/
 .env
+vendor/
+.rector-cache
