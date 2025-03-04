@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
+use Topdata\TopdataFoundationSW6\Util\CliLogger;
 
 /**
  * 06/2024 created
@@ -51,16 +52,16 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
         $this->report['Empty Property Groups (before)'] = count($emptyPropertyGroups);
 
         if (empty($emptyPropertyGroups)) {
-            $this->cliStyle->success('No empty property groups found.');
+            CliLogger::success('No empty property groups found.');
             return;
         }
 
         // Print the names of the empty property groups and ask for confirmation
         foreach ($emptyPropertyGroups as $propertyGroup) {
-            $this->cliStyle->writeln("Empty property group: " . $propertyGroup['name']);
+            CliLogger::writeln("Empty property group: " . $propertyGroup['name']);
         }
 
-        if (!$this->cliStyle->confirm('Really delete these ' . count($emptyPropertyGroups) . ' empty property groups?')) {
+        if (!CliLogger::getCliStyle()->confirm('Really delete these ' . count($emptyPropertyGroups) . ' empty property groups?')) {
             return;
         }
 
@@ -70,7 +71,7 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
         $cnt = $this->connection->executeStatement($sql);
         $this->report['Deleted Empty Property Groups'] = $cnt;
 
-        $this->cliStyle->success(sprintf('Deleted %d empty property groups.', count($emptyPropertyGroups)));
+        CliLogger::success(sprintf('Deleted %d empty property groups.', count($emptyPropertyGroups)));
     }
 
     /**
@@ -88,7 +89,7 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
         $this->report['Property Groups (after)'] = $this->connection->fetchOne('SELECT COUNT(*) FROM property_group');
         $this->report['Property Group Options (after)'] = $this->connection->fetchOne('SELECT COUNT(*) FROM property_group_option');
 
-        $this->cliStyle->dumpDict($this->report, 'Report');
+        CliLogger::getCliStyle()->dumpDict($this->report, 'Report');
 
         return Command::SUCCESS;
     }
@@ -105,15 +106,15 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
     private function _getUnusedPropertyGroupOptionIds(): array
     {
         $allPropertyIds = $this->getAllPropertyGroupOptionIds();
-        $this->cliStyle->green(count($allPropertyIds) . ' all properties found.');
+        CliLogger::getCliStyle()->green(count($allPropertyIds) . ' all properties found.');
         $this->report['All Property Group Options (before)'] = count($allPropertyIds);
 
         $usedPropertyGroupOptionIds = $this->_getUsedPropertyGroupOptionIds();
-        $this->cliStyle->green(count($usedPropertyGroupOptionIds) . ' used properties found.');
+        CliLogger::getCliStyle()->green(count($usedPropertyGroupOptionIds) . ' used properties found.');
         $this->report['Used Property Group Options (before)'] = count($usedPropertyGroupOptionIds);
 
         $ret = array_diff($allPropertyIds, $usedPropertyGroupOptionIds);
-        $this->cliStyle->green(count($ret) . ' unused properties found.');
+        CliLogger::getCliStyle()->green(count($ret) . ' unused properties found.');
         $this->report['Unused Property Group Options (before)'] = count($ret);
 
         return $ret;
@@ -141,7 +142,7 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
         // ---- find them
         $unusedPropertyGroupOptionIds = $this->_getUnusedPropertyGroupOptionIds();
         if (empty($unusedPropertyGroupOptionIds)) {
-            $this->cliStyle->success('No unused properties found.');
+            CliLogger::success('No unused properties found.');
             return;
         }
 
@@ -153,9 +154,9 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
                     ON pgo.id = pgot.property_group_option_id AND pgot.language_id = UNHEX(:defaultLanguageId) 
                  WHERE pgo.id IN ($unusedPropertiesString)";
         $unusedPropertyNames = $this->connection->executeQuery($sql, ['defaultLanguageId' => $this->defaultLanguageId])->fetchFirstColumn();
-        $this->cliStyle->writeln(implode("\n", $unusedPropertyNames));
+        CliLogger::writeln(implode("\n", $unusedPropertyNames));
 
-        if($this->cliStyle->confirm("Really delete these ".count($unusedPropertyNames)." property group options?")) {
+        if(CliLogger::getCliStyle()->confirm("Really delete these ".count($unusedPropertyNames)." property group options?")) {
             // ---- delete the unused property group options
             $unusedPropertiesString = implode(',', array_map(fn($x) => '0x' . bin2hex($x) , $unusedPropertyGroupOptionIds));
             $sql = "DELETE FROM property_group_option WHERE id IN ($unusedPropertiesString)";
@@ -164,7 +165,7 @@ class DeleteUnusedPropertiesCommand extends AbstractTopdataCommand
         }
 
         // ---- done
-        $this->cliStyle->success(sprintf('Deleted %d unused properties.', count($unusedPropertyGroupOptionIds)));
+        CliLogger::success(sprintf('Deleted %d unused properties.', count($unusedPropertyGroupOptionIds)));
 
 
     }

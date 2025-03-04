@@ -3,12 +3,14 @@
 namespace Topdata\TopdataDevelopmentHelperSW6\Command;
 
 use Doctrine\DBAL\Connection;
+use PDO;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
+use Topdata\TopdataFoundationSW6\Util\CliLogger;
 
 /**
  * 11/2024 created
@@ -36,7 +38,7 @@ class DeleteInvalidMediaCommand extends AbstractTopdataCommand
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->cliStyle->title('Deleting invalid media entries');
+        CliLogger::title('Deleting invalid media entries');
 
         // Get all media entries
         $mediaEntries = $this->connection->fetchAllAssociative(
@@ -54,18 +56,18 @@ class DeleteInvalidMediaCommand extends AbstractTopdataCommand
                 $this->connection->executeStatement(
                     'DELETE FROM media WHERE id = :id',
                     ['id' => $entry['id']],
-                    ['id' => \PDO::PARAM_STR]
+                    ['id' => PDO::PARAM_STR]
                 );
                 $deletedCount++;
                 
-                $this->cliStyle->writeln(sprintf(
+                CliLogger::writeln(sprintf(
                     'Deleted media entry for missing file: %s',
                     $entry['path']
                 ));
             }
         }
 
-        $this->cliStyle->success(sprintf('Deleted %d invalid media entries', $deletedCount));
+        CliLogger::success(sprintf('Deleted %d invalid media entries', $deletedCount));
         return Command::SUCCESS;
     }
 }

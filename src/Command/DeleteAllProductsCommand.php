@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Topdata\TopdataFoundationSW6\Command\AbstractTopdataCommand;
+use Topdata\TopdataFoundationSW6\Util\CliLogger;
 
 /**
  * 06/2023 created
@@ -42,8 +43,8 @@ class DeleteAllProductsCommand extends AbstractTopdataCommand
     {
         dump($this->connection->getParams());
 
-        if(!$this->cliStyle->confirm("really delete all products?")) {
-            $this->cliStyle->warning("aborted");
+        if(!CliLogger::getCliStyle()->confirm("really delete all products?")) {
+            CliLogger::warning("aborted");
             return Command::FAILURE;
         }
 
