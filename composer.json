@@ -40,10 +40,10 @@
         }
     },
     "require":     {
-        "shopware/core":                  "6.5.* || 6.6.*",
-        "topdata/topdata-foundation-sw6": "^1.0"
+        "shopware/core": "6.4.* || 6.5.* || 6.6.*"
     },
     "require-dev": {
-        "rector/rector": "^1.2"
+        "xxxxxxxxxxxxxxxxxxxx-topdata/topdata-foundation-sw6": "^1.0",
+        "rector/rector":                                       "^1.2"
     }
 }
