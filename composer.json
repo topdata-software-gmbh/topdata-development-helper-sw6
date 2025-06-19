@@ -1,49 +1,49 @@
 {
-    "name":        "topdata/topdata-development-helper-sw6",
+    "name": "topdata/topdata-development-helper-sw6",
     "description": "A Shopware6 Plugin providing some helpers for developers.",
-    "version":     "v0.0.5",
-    "type":        "shopware-platform-plugin",
-    "license":     "MIT",
-    "authors":     [
+    "version": "0.0.6",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
         {
-            "name":     "TopData Software GmbH",
+            "name": "TopData Software GmbH",
             "homepage": "https://www.topdata.de",
-            "role":     "Manufacturer"
+            "role": "Manufacturer"
         }
     ],
-    "extra":       {
+    "extra": {
         "topdata-technical-documentation": "https://github.com/topdata-software-gmbh/topdata-development-helper-sw6/blob/main/README.md",
-        "topdata-user-documentation":      null,
-        "shopware-plugin-class":           "Topdata\\TopdataDevelopmentHelperSW6\\TopdataDevelopmentHelperSW6",
-        "plugin-icon":                     "src/Resources/config/icon-topdata-development-helper-sw6-256x256.png",
-        "copyright":                       "(c) by TopData Software GmbH",
-        "label":                           {
+        "topdata-user-documentation": null,
+        "shopware-plugin-class": "Topdata\\TopdataDevelopmentHelperSW6\\TopdataDevelopmentHelperSW6",
+        "plugin-icon": "src/Resources/config/icon-topdata-development-helper-sw6-256x256.png",
+        "copyright": "(c) by TopData Software GmbH",
+        "label": {
             "de-DE": "Topdata Development Helper",
             "en-GB": "Topdata Development Helper"
         },
-        "description":                     {
+        "description": {
             "de-DE": "A Shopware6 Plugin providing some helpers for developers.",
             "en-GB": "A Shopware6 Plugin providing some helpers for developers."
         },
-        "manufacturerLink":                {
+        "manufacturerLink": {
             "de-DE": "https://www.topdata.de",
             "en-GB": "https://www.topdata.de"
         },
-        "supportLink":                     {
+        "supportLink": {
             "de-DE": "https://www.topdata.de",
             "en-GB": "https://www.topdata.de"
         }
     },
-    "autoload":    {
+    "autoload": {
         "psr-4": {
             "Topdata\\TopdataDevelopmentHelperSW6\\": "src/"
         }
     },
-    "require":     {
+    "require": {
         "shopware/core": "6.4.* || 6.5.* || 6.6.*"
     },
     "require-dev": {
         "xxxxxxxxxxxxxxxxxxxx-topdata/topdata-foundation-sw6": "^1.0",
-        "rector/rector":                                       "^1.2"
+        "rector/rector": "^1.2"
     }
 }
