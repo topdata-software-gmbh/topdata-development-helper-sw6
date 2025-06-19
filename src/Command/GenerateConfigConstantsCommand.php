@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
     name: 'topdata:development-helper:generate-config-constants',
-    description: 'Parses a Shopware config.xml and generates a PHP constants class.',
+    description: 'Parses a Shopware config.xml and generates a PHP constants class with default values.',
 )]
 class GenerateConfigConstantsCommand extends Command
 {
@@ -40,7 +40,6 @@ class GenerateConfigConstantsCommand extends Command
         $outputFile = $input->getArgument('outputFile');
         $prefix = $input->getOption('prefix') ?? '';
         $namespace = $input->getOption('namespace');
-        // Provide a default class name if outputFile is null
         $className = $input->getOption('className') ?? ($outputFile ? pathinfo($outputFile, PATHINFO_FILENAME) : 'PluginConstants');
 
 
@@ -50,13 +49,11 @@ class GenerateConfigConstantsCommand extends Command
             return Command::FAILURE;
         }
 
-        // Validate output directory only if a file is specified
         if ($outputFile) {
             $outputDir = dirname($outputFile);
             if (!is_dir($outputDir)) {
                 mkdir($outputDir, 0777, true);
             }
-
             if (!is_writable($outputDir)) {
                 $io->error(sprintf('The output directory is not writable: "%s"', $outputDir));
                 return Command::FAILURE;
@@ -74,7 +71,6 @@ class GenerateConfigConstantsCommand extends Command
             $dom = new DOMDocument();
             @$dom->load($inputFile);
             $xpath = new DOMXPath($dom);
-            // Query for all <input-field> elements
             $inputFieldNodes = $xpath->query('//input-field');
 
             if ($inputFieldNodes->length === 0) {
@@ -86,19 +82,19 @@ class GenerateConfigConstantsCommand extends Command
             foreach ($inputFieldNodes as $fieldNode) {
                 $nameNode = $xpath->query('name', $fieldNode)->item(0);
                 if (!$nameNode || empty(trim($nameNode->nodeValue))) {
-                    continue; // Skip fields that have no name
+                    continue;
                 }
                 $key = trim($nameNode->nodeValue);
 
-                // Find label without a 'lang' attribute (defaults to English), fallback to first available
                 $labelNode = $xpath->query('label[not(@lang)]', $fieldNode)->item(0) ?? $xpath->query('label', $fieldNode)->item(0);
                 $label = $labelNode ? $this->cleanTextForComment($labelNode->nodeValue) : 'No label provided.';
 
-                // Find helpText without a 'lang' attribute, fallback to first available
                 $helpTextNode = $xpath->query('helpText[not(@lang)]', $fieldNode)->item(0) ?? $xpath->query('helpText', $fieldNode)->item(0);
                 $helpText = $helpTextNode ? $this->cleanTextForComment($helpTextNode->nodeValue) : '';
 
-                // Extract options
+                $defaultValueNode = $xpath->query('defaultValue', $fieldNode)->item(0);
+                $defaultValue = $defaultValueNode ? trim($defaultValueNode->nodeValue) : null;
+
                 $options = [];
                 $optionsNode = $xpath->query('options', $fieldNode)->item(0);
                 if ($optionsNode) {
@@ -115,15 +111,14 @@ class GenerateConfigConstantsCommand extends Command
                     }
                 }
 
-                // Using key as index handles duplicates; last one wins.
                 $configData[$key] = [
                     'label' => $label,
                     'helpText' => $helpText,
+                    'defaultValue' => $defaultValue,
                     'options' => $options,
                 ];
             }
 
-            // Sort the data alphabetically by key for consistent output
             ksort($configData);
 
         } catch (Exception $e) {
@@ -132,11 +127,8 @@ class GenerateConfigConstantsCommand extends Command
         }
 
         $io->info(sprintf('Found %d unique configuration keys.', count($configData)));
-
-        // --- 3. Generate PHP File Content ---
         $phpContent = $this->buildPhpFileContent($configData, $namespace, $className, $prefix);
 
-        // --- 4. Write to File or STDOUT ---
         if ($outputFile) {
             try {
                 file_put_contents($outputFile, $phpContent);
@@ -146,7 +138,6 @@ class GenerateConfigConstantsCommand extends Command
                 return Command::FAILURE;
             }
         } else {
-            // Write directly to standard output
             $output->write($phpContent);
         }
 
@@ -161,7 +152,6 @@ class GenerateConfigConstantsCommand extends Command
 
     private function cleanTextForComment(string $text): string
     {
-        // Replace newlines and multiple spaces with a single space and trim.
         return trim(preg_replace('/\s+/', ' ', $text));
     }
 
@@ -174,10 +164,7 @@ class GenerateConfigConstantsCommand extends Command
         $lines[] = '';
         $lines[] = '/**';
         $lines[] = ' * Contains constants for the plugin configuration keys.';
-        $lines[] = ' *';
-        $lines[] = ' * ! THIS FILE IS AUTO-GENERATED !';
-        $lines[] = ' * ! Do not edit this file directly !';
-        $lines[] = ' *';
+        $lines[] = ' * ! THIS FILE IS AUTO-GENERATED ! Do not edit this file directly !';
         $lines[] = ' * Generated by: ' . self::class;
         $lines[] = ' * Generated at: ' . date('Y-m-d H:i:s');
         $lines[] = ' */';
@@ -187,7 +174,7 @@ class GenerateConfigConstantsCommand extends Command
         $isFirstConstant = true;
         foreach ($configData as $key => $data) {
             if (!$isFirstConstant) {
-                $lines[] = ''; // Add a blank line between constants for readability
+                $lines[] = '';
             }
             $isFirstConstant = false;
 
@@ -199,6 +186,15 @@ class GenerateConfigConstantsCommand extends Command
             if (!empty($data['helpText'])) {
                 $lines[] = '     *';
                 $lines[] = '     * ' . wordwrap('Help: ' . $data['helpText'], 90, "\n     * ");
+            }
+
+            // Add default value to the docblock, if it exists and is not an empty string
+            if ($data['defaultValue'] !== null && $data['defaultValue'] !== '') {
+                $lines[] = '     *';
+                $defaultValueForComment = is_numeric($data['defaultValue'])
+                    ? $data['defaultValue']
+                    : "'" . addslashes($data['defaultValue']) . "'";
+                $lines[] = "     * @default {$defaultValueForComment}";
             }
 
             if (!empty($data['options'])) {
@@ -217,7 +213,7 @@ class GenerateConfigConstantsCommand extends Command
         }
 
         $lines[] = '}';
-        $lines[] = ''; // Final newline
+        $lines[] = '';
 
         return implode("\n", $lines);
     }
