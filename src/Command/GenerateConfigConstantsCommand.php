@@ -71,42 +71,48 @@ class GenerateConfigConstantsCommand extends Command
             $dom = new DOMDocument();
             @$dom->load($inputFile);
             $xpath = new DOMXPath($dom);
-            $inputFieldNodes = $xpath->query('//input-field');
+            // Query for both input-field and component elements
+            $configNodes = $xpath->query('//input-field | //component');
 
-            if ($inputFieldNodes->length === 0) {
-                $io->warning('No <input-field> elements found in the XML file.');
+            if ($configNodes->length === 0) {
+                $io->warning('No configuration elements (<input-field> or <component>) found in the XML file.');
                 return Command::SUCCESS;
             }
 
             $configData = [];
-            foreach ($inputFieldNodes as $fieldNode) {
-                $nameNode = $xpath->query('name', $fieldNode)->item(0);
-                if (!$nameNode || empty(trim($nameNode->nodeValue))) {
+            foreach ($configNodes as $node) {
+                $nameNode = $xpath->query('name', $node)->item(0);
+                if (!$nameNode || trim($nameNode->nodeValue ?? '') === '') {
                     continue;
                 }
                 $key = trim($nameNode->nodeValue);
 
-                $labelNode = $xpath->query('label[not(@lang)]', $fieldNode)->item(0) ?? $xpath->query('label', $fieldNode)->item(0);
+                $labelNode = $xpath->query('label[not(@lang)]', $node)->item(0) ?? $xpath->query('label', $node)->item(0);
                 $label = $labelNode ? $this->cleanTextForComment($labelNode->nodeValue) : 'No label provided.';
 
-                $helpTextNode = $xpath->query('helpText[not(@lang)]', $fieldNode)->item(0) ?? $xpath->query('helpText', $fieldNode)->item(0);
+                $helpTextNode = $xpath->query('helpText[not(@lang)]', $node)->item(0) ?? $xpath->query('helpText', $node)->item(0);
                 $helpText = $helpTextNode ? $this->cleanTextForComment($helpTextNode->nodeValue) : '';
 
-                $defaultValueNode = $xpath->query('defaultValue', $fieldNode)->item(0);
-                $defaultValue = $defaultValueNode ? trim($defaultValueNode->nodeValue) : null;
-
+                // Default value and options are only available for input-field elements
+                $defaultValue = null;
                 $options = [];
-                $optionsNode = $xpath->query('options', $fieldNode)->item(0);
-                if ($optionsNode) {
-                    $optionNodes = $xpath->query('option', $optionsNode);
-                    foreach($optionNodes as $optionNode) {
-                        $idNode = $xpath->query('id', $optionNode)->item(0);
-                        $nameNode = $xpath->query('name[not(@lang)]', $optionNode)->item(0) ?? $xpath->query('name', $optionNode)->item(0);
-                        if ($idNode && $nameNode) {
-                            $options[] = [
-                                'id' => trim($idNode->nodeValue),
-                                'name' => $this->cleanTextForComment($nameNode->nodeValue),
-                            ];
+                
+                if ($node->nodeName === 'input-field') {
+                    $defaultValueNode = $xpath->query('defaultValue', $node)->item(0);
+                    $defaultValue = $defaultValueNode ? trim($defaultValueNode->nodeValue) : null;
+
+                    $optionsNode = $xpath->query('options', $node)->item(0);
+                    if ($optionsNode) {
+                        $optionNodes = $xpath->query('option', $optionsNode);
+                        foreach($optionNodes as $optionNode) {
+                            $idNode = $xpath->query('id', $optionNode)->item(0);
+                            $nameNode = $xpath->query('name[not(@lang)]', $optionNode)->item(0) ?? $xpath->query('name', $optionNode)->item(0);
+                            if ($idNode && $nameNode) {
+                                $options[] = [
+                                    'id' => trim($idNode->nodeValue),
+                                    'name' => $this->cleanTextForComment($nameNode->nodeValue),
+                                ];
+                            }
                         }
                     }
                 }
