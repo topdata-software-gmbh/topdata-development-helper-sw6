@@ -11,6 +11,18 @@ shopware:
 ```
 
 
+# Twig Functions
+
+## print_r
+This plugin provides a simple `print_r()` function for debugging variables directly within your Twig templates. The output is automatically wrapped in `<pre><code>` tags for readability.
+
+**Usage:**
+```twig
+{# In any .html.twig file #}
+
+{{ print_r(page.header) }}
+```
+
 # Console Commands
 
 ## topdata:development-helper:delete-all-products

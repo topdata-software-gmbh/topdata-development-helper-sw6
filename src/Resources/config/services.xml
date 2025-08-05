@@ -6,6 +6,11 @@
 
     <services>
 
+        <!-- TWIG EXTENSIONS -->
+        <service id="Topdata\TopdataDevelopmentHelperSW6\Twig\DevelopmentHelperExtension">
+            <tag name="twig.extension"/>
+        </service>
+
         <!-- CONSOLE COMMANDS -->
         <service id="Topdata\TopdataDevelopmentHelperSW6\Command\DeleteAllProductsCommand" autowire="true">
             <tag name="console.command"/>
