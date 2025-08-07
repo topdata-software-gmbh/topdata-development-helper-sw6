@@ -41,7 +41,6 @@
     },
     "require": {
         "shopware/core": "6.4.* || 6.5.* || 6.6.*",
-        "symfony/console": "^5.4 || ^6.0"
     },
     "require-dev": {
         "xxxxxxxxxxxxxxxxxxxx-topdata/topdata-foundation-sw6": "^1.0",
