@@ -13,4 +13,4 @@ A: Führen Sie `bin/console topdata:delete:invalid-media` aus, um ungültige Med
 A: Ja, verwenden Sie `bin/console topdata:dump:plugin-config`, um Konfigurationen in JSON-Dateien zu exportieren.
 
 **F: Wie verwende ich die Twig-Debug-Funktion?**
-A: Verwenden Sie `{{ print_r(variable) }}` in einer beliebigen Vorlage, um Variableninhalte auszugeben.
+A: Verwenden Sie `{% raw %}{{ print_r(variable) }}{% endraw %}` in einer beliebigen Vorlage, um Variableninhalte auszugeben.

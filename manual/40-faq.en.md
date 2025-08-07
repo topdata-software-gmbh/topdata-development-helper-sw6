@@ -13,4 +13,4 @@ A: Execute `bin/console topdata:delete:invalid-media` to remove invalid media re
 A: Yes, use `bin/console topdata:dump:plugin-config` to export configurations to JSON files.
 
 **Q: How do I use the Twig debug function?**
-A: Use `{{ print_r(variable) }}` in any template to output variable contents.
+A: Use `{% raw %}{{ print_r(variable) }}{% endraw %}` in any template to output variable contents.

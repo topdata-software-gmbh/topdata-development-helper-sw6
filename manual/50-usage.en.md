@@ -29,4 +29,4 @@ title: Usage
 
 ## Debugging Tools
 
-Use `{{ print_r(variable) }}` in Twig templates to inspect variables during development.
+Use `{% raw %}{{ print_r(variable) }}{% endraw %}` in Twig templates to inspect variables during development.

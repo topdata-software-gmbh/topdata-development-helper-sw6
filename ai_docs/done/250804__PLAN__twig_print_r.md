@@ -1,6 +1,6 @@
 ### Project: Add `print_r` Twig Function
 
-**Goal:** Create a custom Twig function `{{ print_r(variable) }}` that provides a simple way to debug variables directly in template files, wrapping the output in `<pre><code>` tags for readability.
+**Goal:** Create a custom Twig function `{% raw %}{{ print_r(variable) }}{% endraw %}` that provides a simple way to debug variables directly in template files, wrapping the output in `<pre><code>` tags for readability.
 
 ---
 

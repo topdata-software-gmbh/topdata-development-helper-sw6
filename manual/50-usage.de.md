@@ -29,4 +29,4 @@ title: Verwendung
 
 ## Debugging-Tools
 
-Verwenden Sie `{{ print_r(variable) }}` in Twig-Vorlagen, um Variablen während der Entwicklung zu überprüfen.
+Verwenden Sie `{% raw %}{{ print_r(variable) }}{% endraw %}` in Twig-Vorlagen, um Variablen während der Entwicklung zu überprüfen.
