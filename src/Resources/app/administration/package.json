@@ -1,0 +1,13 @@
+{
+  "name": "topdata-development-helper-sw6-administration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@shopware-ag/vite-plugin-shopware": "^1.0.0",
+    "vite": "^5.0.0"
+  }
+}

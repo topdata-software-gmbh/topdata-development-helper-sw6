@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/vite/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM"],
+    "types": ["node", "shopware-extensions", "shopware-platform"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.js", "src/**/*.vue"],
+  "exclude": ["node_modules"]
+}
